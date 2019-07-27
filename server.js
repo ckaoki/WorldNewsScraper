@@ -1,6 +1,31 @@
+var animals = [
+  {
+    animalType: "dog",
+    pet: true,
+    fierceness: 4
+  }, {
+    animalType: "cat",
+    pet: true,
+    fierceness: 10
+  }, {
+    animalType: "giraffe",
+    pet: false,
+    fierceness: 4
+  }, {
+    animalType: "zebra",
+    pet: false,
+    fierceness: 8
+  }, {
+    animalType: "lion",
+    pet: false,
+    fierceness: 10
+  }
+];
+
 var express = require("express");
 var logger = require("morgan");
 var mongoose = require("mongoose");
+var exphbs = require("express-handlebars");
 
 // Our scraping tools
 var axios = require("axios");
@@ -9,10 +34,15 @@ var cheerio = require("cheerio");
 // Require all models
 var db = require("./models");
 
+// Configure port
 var PORT = process.env.PORT || 3000;
 
 // Initialize Express
 var app = express();
+
+// Set view engine handlebars
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
 
 // Configure middleware
 
@@ -24,11 +54,8 @@ app.use(express.json());
 // Make public a static folder
 app.use(express.static("public"));
 
-
-
 // If deployed, use the deployed database. Otherwise use the local mongoHeadlines database
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
-
 mongoose.connect(MONGODB_URI);
 
 // Routes
@@ -77,22 +104,31 @@ app.get("/articles", function(req, res) {
 
   .populate("note")
   .then(function(dbArticle) {
-
     res.json(dbArticle);
   })
   .catch(function(err) {
     // If an error occurs, send it back to the client
     res.json(err);
+  });
 });
-});
+
+// app.get("/articlesHandlebars", function(req, res) {
+
+//   db.Article.find({})
+
+//   .populate("note")
+//   .then(function(articles) {
+//     const data = {articles};
+//     res.render("index", data);
+//   })
+//   .catch(function(err) {
+//     // If an error occurs, send it back to the client
+//     res.json(err);
+//   });
+// });
 
 // Route for grabbing a specific Article by id, populate it with it's note
 app.get("/articles/:id", function(req, res) {
-  // TODO
-  // ====
-  // Finish the route so it finds one article using the req.params.id,
-  // and run the populate method with "note",
-  // then responds with the article with the note included
   db.Article.findOne({_id:req.params.id})
   .populate("note")
   .then(function(dbArticle) {
@@ -106,11 +142,6 @@ app.get("/articles/:id", function(req, res) {
 
 // Route for saving/updating an Article's associated Note
 app.post("/articles/:id", function(req, res) {
-  // TODO
-  // ====
-  // save the new note that gets posted to the Notes collection
-  // then find an article from the req.params.id
-  // and update it's "note" property with the _id of the new note
   db.Note.create(req.body)
     .then(function(dbNote) {
       return db.Article.findOneAndUpdate({_id:req.params.id}, {note:dbNote._id}, {new: true});
@@ -124,6 +155,19 @@ app.post("/articles/:id", function(req, res) {
       res.json(err);
     });
 });
+
+
+
+// app.get("/", function(req,res){
+//   data={animals};
+//   res.render('index', data);
+// })
+app.get("/handlebars", function(req,res){
+  data={animals};
+  console.log("hhh")
+  console.log(data);
+  res.render('index2', data);
+})
 
 // Start the server
 app.listen(PORT, function() {
