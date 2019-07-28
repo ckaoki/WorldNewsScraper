@@ -1,27 +1,3 @@
-var animals = [
-  {
-    animalType: "dog",
-    pet: true,
-    fierceness: 4
-  }, {
-    animalType: "cat",
-    pet: true,
-    fierceness: 10
-  }, {
-    animalType: "giraffe",
-    pet: false,
-    fierceness: 4
-  }, {
-    animalType: "zebra",
-    pet: false,
-    fierceness: 8
-  }, {
-    animalType: "lion",
-    pet: false,
-    fierceness: 10
-  }
-];
-
 var express = require("express");
 var logger = require("morgan");
 var mongoose = require("mongoose");
@@ -140,7 +116,7 @@ app.get("/articles/:id", function(req, res) {
   .catch(function(err) {
     // If an error occurs, send it back to the client
     res.json(err);
-});
+  });
 });
 
 // Route for saving/updating an Article's associated Note
@@ -158,19 +134,6 @@ app.post("/articles/:id", function(req, res) {
       res.json(err);
     });
 });
-
-
-
-// app.get("/", function(req,res){
-//   data={animals};
-//   res.render('index', data);
-// })
-app.get("/handlebars", function(req,res){
-  data={animals};
-  console.log("hhh")
-  console.log(data);
-  res.render('index2', data);
-})
 
 // Start the server
 app.listen(PORT, function() {

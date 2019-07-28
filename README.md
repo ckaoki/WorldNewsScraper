@@ -20,7 +20,7 @@ These instructions will get you a copy of the project up and running on your loc
 
      * URL - the url to the original article
 
-  1. Users are also be able to leave comments on the articles displayed and revisit them later. The comments are saved to the database as well and associated with their articles. Users are also be able to delete comments left on articles. All stored comments are be visible to every user.
+2. Users are also be able to leave comments on the articles displayed and revisit them later. The comments are saved to the database as well and associated with their articles. Users are also be able to delete comments left on articles. All stored comments are be visible to every user.
 
 
 ### Installing
