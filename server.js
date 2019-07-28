@@ -75,6 +75,8 @@ app.get("/scrape", function(req, res) {
       // Add the text and href of every link, and save them as properties of the result object
       result.title = $(this)
         .children("div").children("h1").children("a").text();
+      result.summary = $(this)      
+        .children("div").children("p:nth-child(3)").text();
       result.link = $(this)
         .children("div").children("h1").children("a").attr("href");
       result.image = $(this)
@@ -112,23 +114,24 @@ app.get("/articles", function(req, res) {
   });
 });
 
-// app.get("/articlesHandlebars", function(req, res) {
+app.get("/", function(req, res) {
+  console.log("starting")
+  db.Article.find({})
 
-//   db.Article.find({})
-
-//   .populate("note")
-//   .then(function(articles) {
-//     const data = {articles};
-//     res.render("index", data);
-//   })
-//   .catch(function(err) {
-//     // If an error occurs, send it back to the client
-//     res.json(err);
-//   });
-// });
+  .populate("note")
+  .then(function(articles) {
+    const data = {articles};
+    res.render("index", data);
+  })
+  .catch(function(err) {
+    // If an error occurs, send it back to the client
+    res.json(err);
+  });
+});
 
 // Route for grabbing a specific Article by id, populate it with it's note
 app.get("/articles/:id", function(req, res) {
+  console.log("art")
   db.Article.findOne({_id:req.params.id})
   .populate("note")
   .then(function(dbArticle) {

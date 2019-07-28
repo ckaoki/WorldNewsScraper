@@ -3,17 +3,18 @@
     <div class="col-6" id="articles">
       {{#each articles}}
         <div class="article" data-id="{{id}}">    
-          <h2 style="margin-bottom:5px">{{title}}</h2>    
-          <a href="{{link}}" target="_blank">{{link}}</a>
+          <h2 style="margin-bottom:5px" data-id={{_id}}>{{title}}</h2>   
+          <p class="summary">{{summary}}</p> 
+          <a href="{{link}}" target="_blank">{{link}}</a><br>
           <img src="{{image}}">
+          <hr>
         </div>
       {{/each}}
     </div>
-  </div>
-  <div class="row">
     <div class="col-6" id="notes">
     </div>
   </div>
+
 
 </div>
 
